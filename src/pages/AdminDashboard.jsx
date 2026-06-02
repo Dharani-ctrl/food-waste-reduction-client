@@ -6,7 +6,7 @@ import { Users, HeartHandshake, Utensils, LayoutDashboard, BarChart3, Search, Ch
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import toast from 'react-hot-toast';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app";
+const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server.onrender.com";
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
