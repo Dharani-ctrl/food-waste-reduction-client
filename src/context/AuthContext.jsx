@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const AuthContext = createContext();
-export const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
+export const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app";
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     // Synchronously check local storage on initial render to prevent premature redirects

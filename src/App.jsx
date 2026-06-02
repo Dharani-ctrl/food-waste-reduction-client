@@ -17,8 +17,11 @@ import Contact from './pages/Contact';
 import { Toaster, toast } from 'react-hot-toast';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
-const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
+const socket = io(process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app", {
+  transports: ['websocket'],
+  withCredentials: true,
+});
+const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app";
 
 function AppContent() {
   const { user } = useContext(AuthContext);

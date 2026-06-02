@@ -16,7 +16,7 @@ import {
 import CountdownTimer from '../components/CountdownTimer';
 import toast from 'react-hot-toast';
 
-const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
+const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app";
 
 const DonorDashboard = () => {
   const { user } = useContext(AuthContext);
