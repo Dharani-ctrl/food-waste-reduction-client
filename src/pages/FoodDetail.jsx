@@ -8,7 +8,7 @@ const FoodDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-  
+  const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -24,7 +24,7 @@ const FoodDetail = () => {
         // We can use the existing NGO endpoint if it allows fetch by ID, but there isn't one directly.
         // Wait, backend doesn't have /api/ngo/listings/:id. Let's just fetch all and find, or we can add an endpoint.
         // For simplicity and since we don't want to modify backend routes unless needed, let's fetch all and filter.
-        const res = await axios.get(`http://localhost:5000/api/ngo/listings`, config);
+        const res = await axios.get(`${API_URL}/api/ngo/listings`, config);
         const found = res.data.find(l => l._id === id);
         if (found) {
           setListing(found);
@@ -73,7 +73,7 @@ const FoodDetail = () => {
     try {
       setRequestStatus('processing');
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`http://localhost:5000/api/ngo/request/${listing._id}`, {}, config);
+      await axios.post(`${API_URL}/api/ngo/request/${listing._id}`, {}, config);
       setRequestStatus('requested');
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to request pickup');

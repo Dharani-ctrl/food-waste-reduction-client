@@ -16,6 +16,8 @@ import {
 import CountdownTimer from '../components/CountdownTimer';
 import toast from 'react-hot-toast';
 
+const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
+
 const DonorDashboard = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -46,10 +48,10 @@ const DonorDashboard = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       if (activeTab === 'listings') {
-        const res = await axios.get('http://localhost:5000/api/donor/my-listings', config);
+        const res = await axios.get(`${API_URL}/api/donor/my-listings`, config);
         setListings(res.data);
       } else if (activeTab === 'requests') {
-        const res = await axios.get('http://localhost:5000/api/donor/requests', config);
+        const res = await axios.get(`${API_URL}/api/donor/requests`, config);
         setRequests(res.data);
       }
     } catch (err) {
@@ -94,7 +96,7 @@ const DonorDashboard = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       const payload = { ...formData, images: formData.image ? [formData.image] : [] };
-      await axios.post('http://localhost:5000/api/donor/food', payload, config);
+      await axios.post(`${API_URL}/api/donor/food`, payload, config);
       setSuccess('Food listed successfully! Volunteers will see it soon.');
       toast.success('Food listed successfully!', { icon: '🍲' });
       setFormData({
@@ -117,7 +119,7 @@ const DonorDashboard = () => {
     if (!window.confirm('Delete this listing?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`http://localhost:5000/api/donor/food/${id}`, config);
+      await axios.delete(`${API_URL}/api/donor/food/${id}`, config);
       setListings(listings.filter(l => l._id !== id));
       toast.success('Listing deleted');
     } catch (err) {
@@ -130,9 +132,9 @@ const DonorDashboard = () => {
     try {
       setLoading(true);
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`http://localhost:5000/api/donor/requests/${requestId}`, { status }, config);
+      await axios.put(`${API_URL}/api/donor/requests/${requestId}`, { status }, config);
       // Refresh requests to show updated status
-      const res = await axios.get('http://localhost:5000/api/donor/requests', config);
+      const res = await axios.get(`${API_URL}/api/donor/requests`, config);
       setRequests(res.data);
       toast.success(`Request ${status} successfully!`);
     } catch (err) {

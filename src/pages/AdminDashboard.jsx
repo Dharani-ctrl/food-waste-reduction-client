@@ -6,6 +6,7 @@ import { Users, HeartHandshake, Utensils, LayoutDashboard, BarChart3, Search, Ch
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import toast from 'react-hot-toast';
 
+const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -37,13 +38,13 @@ const AdminDashboard = () => {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         
         if (activeTab === 'overview') {
-          const res = await axios.get('http://localhost:5000/api/admin/stats', config);
+          const res = await axios.get(`${API_URL}/api/admin/stats`, config);
           setStats(res.data);
         } else if (activeTab === 'users') {
-          const res = await axios.get('http://localhost:5000/api/admin/users', config);
+          const res = await axios.get(`${API_URL}/api/admin/users`, config);
           setUsers(res.data);
         } else if (activeTab === 'listings') {
-          const res = await axios.get('http://localhost:5000/api/admin/listings', config);
+          const res = await axios.get(`${API_URL}/api/admin/listings`, config);
           setListings(res.data);
         }
       } catch (error) {
@@ -60,7 +61,7 @@ const AdminDashboard = () => {
   const handleUserStatus = async (id, isBlocked) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`http://localhost:5000/api/admin/users/${id}/status`, { isBlocked }, config);
+      await axios.put(`${API_URL}/api/admin/users/${id}/status`, { isBlocked }, config);
       setUsers(users.map(u => u._id === id ? { ...u, isBlocked } : u));
       toast.success(isBlocked ? 'User blocked' : 'User unblocked');
     } catch (error) {
@@ -73,7 +74,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`http://localhost:5000/api/admin/users/${id}`, config);
+      await axios.delete(`${API_URL}/api/admin/users/${id}`, config);
       setUsers(users.filter(u => u._id !== id));
       toast.success('User deleted successfully');
     } catch (error) {
@@ -85,7 +86,7 @@ const AdminDashboard = () => {
   const handleListingStatus = async (id, status) => {
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`http://localhost:5000/api/admin/listings/${id}/status`, { status }, config);
+      await axios.put(`${API_URL}/api/admin/listings/${id}/status`, { status }, config);
       setListings(listings.map(l => l._id === id ? { ...l, status } : l));
       toast.success(`Listing marked as ${status}`);
     } catch (error) {
@@ -98,7 +99,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this listing?')) return;
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.delete(`http://localhost:5000/api/admin/listings/${id}`, config);
+      await axios.delete(`${API_URL}/api/admin/listings/${id}`, config);
       setListings(listings.filter(l => l._id !== id));
       toast.success('Listing deleted successfully');
     } catch (error) {

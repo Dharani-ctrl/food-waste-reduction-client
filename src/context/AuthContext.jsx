@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const AuthContext = createContext();
-
+export const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     // Synchronously check local storage on initial render to prevent premature redirects
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       setUser(response.data);
       localStorage.setItem('userInfo', JSON.stringify(response.data));
       return response.data;
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axios.post(`${API_URL}/api/auth/register`, userData);
       // Removed auto-login on register as per user request to redirect to login page
       return response.data;
     } catch (error) {

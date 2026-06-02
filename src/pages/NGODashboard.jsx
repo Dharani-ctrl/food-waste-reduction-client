@@ -8,6 +8,8 @@ import CountdownTimer from '../components/CountdownTimer';
 import toast from 'react-hot-toast';
 import L from 'leaflet';
 
+
+const API_URL = process.env.REACT_APP_API_URL || "https://food-waste-reduction-server-vert.vercel.app/";
 // Custom icons for Map
 const userIcon = new L.DivIcon({
   className: 'custom-user-marker',
@@ -62,7 +64,7 @@ const NGODashboard = () => {
     setLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      let queryUrl = `http://localhost:5000/api/ngo/listings?`;
+      let queryUrl = `${API_URL}/api/ngo/listings?`;
       if (filters.city) queryUrl += `city=${filters.city}&`;
       if (filters.category !== 'all') queryUrl += `category=${filters.category}&`;
       if (filters.listingType !== 'all') queryUrl += `listingType=${filters.listingType}`;
@@ -113,7 +115,7 @@ const NGODashboard = () => {
     setLoading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.get('http://localhost:5000/api/ngo/my-requests', config);
+      const res = await axios.get(`${API_URL}/api/ngo/my-requests`, config);
       setRequests(res.data);
     } catch (err) {
       setError('Failed to fetch your requests');
@@ -145,7 +147,7 @@ const NGODashboard = () => {
     try {
       setLoading(true);
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`http://localhost:5000/api/ngo/request/${listingId}`, {}, config);
+      await axios.post(`${API_URL}/api/ngo/request/${listingId}`, {}, config);
       setSuccess('Pickup requested successfully!');
       toast.success('Pickup requested successfully!', { icon: '🙌' });
       // Refresh listings to remove the requested one from active browse view
@@ -164,7 +166,7 @@ const NGODashboard = () => {
     try {
       setLoading(true);
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.put(`http://localhost:5000/api/ngo/request/${requestId}`, { status: newStatus }, config);
+      await axios.put(`${API_URL}/api/ngo/request/${requestId}`, { status: newStatus }, config);
       // Refresh requests
       fetchRequests();
       toast.success(`Status updated to ${newStatus}`);
